@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>管理歌曲 — 敬拜歌曲</title>
+  <meta name="theme-color" content="#7c6af7" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<div class="header">
+  <h1>⚙️ 管理歌曲</h1>
+  <div class="header-actions">
+    <a href="/leader" class="btn btn-ghost btn-sm">选歌</a>
+    <a href="/" class="btn btn-ghost btn-sm">主页</a>
+  </div>
+</div>
+
+<div class="admin-container">
+
+  <!-- Add / Edit Form -->
+  <div class="admin-section">
+    <h2 id="formTitle">➕ 添加新歌曲</h2>
+    <form id="songForm">
+      <input type="hidden" id="editId" />
+
+      <div class="form-group">
+        <label>歌曲名称 Song Title *</label>
+        <input class="form-input" id="fieldTitle" type="text" placeholder="例：感谢赞美你" required />
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>分类 Category *</label>
+          <select class="form-select" id="fieldCategory" required>
+            <option value="">— 选择 —</option>
+            <option value="praise">赞美 Praise</option>
+            <option value="worship">敬拜 Worship</option>
+            <option value="slow">抒情 Slow</option>
+            <option value="fast">快歌 Fast</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>YouTube 视频 ID</label>
+          <input class="form-input" id="fieldYoutube" type="text" placeholder="例：dQw4w9WgXcQ" />
+          <p class="form-hint">YouTube URL 中 v= 后面的字符串</p>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>歌词（含和弦）Lyrics with Chords</label>
+        <textarea class="form-textarea" id="fieldLyrics" placeholder="用 [G] [Am] [C] 等格式在歌词中标注和弦&#10;例：[G]感谢你，[D]我的主&#10;&#10;不加和弦直接输入歌词也可以。" style="min-height:200px;font-family:monospace;font-size:0.9rem"></textarea>
+        <p class="form-hint">格式：[和弦]歌词 — 和弦可省略。每行一句。空行分段。</p>
+      </div>
+
+      <div class="flex gap-8 mt-16">
+        <button type="submit" class="btn btn-primary" id="submitBtn">保存歌曲</button>
+        <button type="button" class="btn btn-ghost" id="cancelBtn">取消</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- Song list -->
+  <div class="admin-section">
+    <h2>🎵 歌曲列表</h2>
+    <div class="admin-song-list" id="adminSongList">
+      <p class="text-muted">加载中…</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/admin.js"></script>
+</body>
+</html>

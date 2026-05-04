@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>选歌 — 敬拜歌曲</title>
+  <meta name="theme-color" content="#7c6af7" />
+  <link rel="manifest" href="/manifest.json" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+<div class="header">
+  <h1>🎼 选择歌曲</h1>
+  <div class="header-actions">
+    <a href="/" class="btn btn-ghost btn-sm">会员视图</a>
+  </div>
+</div>
+
+<div class="search-wrap">
+  <input class="search-bar" id="searchInput" type="search" placeholder="搜索歌曲… Search songs…" />
+</div>
+
+<div class="category-filter">
+  <button class="cat-btn active" data-cat="all">全部</button>
+  <button class="cat-btn" data-cat="praise">赞美</button>
+  <button class="cat-btn" data-cat="worship">敬拜</button>
+  <button class="cat-btn" data-cat="slow">抒情</button>
+  <button class="cat-btn" data-cat="fast">快歌</button>
+</div>
+
+<div class="song-list" id="songList">
+  <p class="text-muted" style="padding:20px 0;text-align:center">加载中…</p>
+</div>
+
+<!-- Fixed setlist panel at bottom -->
+<div class="setlist-panel">
+  <div class="setlist-header">
+    <h3>歌单 <span id="setlistCount" style="color:var(--text-muted);font-weight:400;font-size:0.85rem">（最多5首）</span></h3>
+    <button class="btn btn-ghost btn-sm" id="clearBtn">清除</button>
+  </div>
+  <div class="setlist-songs" id="setlistSongs">
+    <span class="setlist-empty">尚未选择歌曲</span>
+  </div>
+  <button class="btn btn-whatsapp" id="shareBtn" style="width:100%;justify-content:center" disabled>
+    📲 分享歌单 WhatsApp
+  </button>
+</div>
+
+<script src="/js/leader.js"></script>
+</body>
+</html>
