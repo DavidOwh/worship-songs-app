@@ -14,6 +14,7 @@
   --cat-worship: #7c6af7;
   --cat-slow: #38bdf8;
   --cat-fast: #fb7185;
+  --cat-dialect: #4ade80;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -89,6 +90,7 @@ body {
 .tag-worship { background: rgba(124,106,247,0.2); color: var(--cat-worship); }
 .tag-slow { background: rgba(56,189,248,0.2); color: var(--cat-slow); }
 .tag-fast { background: rgba(251,113,133,0.2); color: var(--cat-fast); }
+.tag-dialect { background: rgba(74,222,128,0.2); color: var(--cat-dialect); }
 
 /* ── Search bar ── */
 .search-wrap {

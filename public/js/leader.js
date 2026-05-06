@@ -13,7 +13,7 @@ const shareBtn = document.getElementById('shareBtn');
 const clearBtn = document.getElementById('clearBtn');
 const searchInput = document.getElementById('searchInput');
 
-const catLabels = { praise: '赞美', worship: '敬拜', slow: '抒情', fast: '快歌' };
+const catLabels = { praise: '赞美', worship: '敬拜', slow: '抒情', fast: '快歌', dialect: '方言' };
 
 function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');

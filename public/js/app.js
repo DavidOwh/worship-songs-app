@@ -67,7 +67,7 @@ function renderSong(song) {
        </div>`
     : '';
 
-  const catLabels = { praise: '赞美', worship: '敬拜', slow: '抒情', fast: '快歌' };
+  const catLabels = { praise: '赞美', worship: '敬拜', slow: '抒情', fast: '快歌', dialect: '方言' };
 
   songView.innerHTML = `
     <div class="song-title-big">${escHtml(song.title)}</div>
