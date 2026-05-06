@@ -28,6 +28,15 @@ function renderList() {
     return matchCat && matchQ;
   });
 
+  // In "全部" view: sort dialect songs to the bottom, grouped together
+  if (activeCat === 'all') {
+    filtered.sort((a, b) => {
+      const aD = a.category === 'dialect' ? 1 : 0;
+      const bD = b.category === 'dialect' ? 1 : 0;
+      return aD - bD;
+    });
+  }
+
   if (!filtered.length) {
     songListEl.innerHTML = '<p class="text-muted" style="padding:20px 0;text-align:center">没有找到歌曲</p>';
     return;
