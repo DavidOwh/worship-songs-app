@@ -21,7 +21,8 @@ function escHtml(s) {
 function renderList() {
   const filtered = allSongs.filter(s => {
     if (activeCat === 'all') return true;
-    if (activeCat === 'lifeline') return s.lyrics && s.lyrics.includes('生命之光');
+    if (activeCat === 'lifeline') return s.label === 'lifeline';
+    if (activeCat === 'worship') return s.category === 'worship' || s.category === 'slow';
     return s.category === activeCat;
   });
 
