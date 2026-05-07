@@ -4,12 +4,14 @@ const MAX_SONGS = 6;
 let allSongs = [];
 let selected = []; // array of song ids
 let activeCat = 'all';
+let searchQuery = '';
 
 const songListEl = document.getElementById('songList');
 const setlistSongsEl = document.getElementById('setlistSongs');
 const setlistCount = document.getElementById('setlistCount');
 const shareBtn = document.getElementById('shareBtn');
 const clearBtn = document.getElementById('clearBtn');
+const searchInput = document.getElementById('searchInput');
 
 const catLabels = { praise: '赞美', worship: '敬拜', slow: '抒情', fast: '快歌', dialect: '方言' };
 
@@ -19,11 +21,16 @@ function escHtml(s) {
 
 // ── Render song library ───────────────────────────────────────
 function renderList() {
+  const q = searchQuery.trim().toLowerCase();
   const filtered = allSongs.filter(s => {
-    if (activeCat === 'all') return true;
-    if (activeCat === 'lifeline') return s.label === 'lifeline';
-    if (activeCat === 'worship') return s.category === 'worship' || s.category === 'slow';
-    return s.category === activeCat;
+    const matchesCat = (() => {
+      if (activeCat === 'all') return true;
+      if (activeCat === 'lifeline') return s.label === 'lifeline';
+      if (activeCat === 'worship') return s.category === 'worship' || s.category === 'slow';
+      return s.category === activeCat;
+    })();
+    const matchesSearch = !q || s.title.toLowerCase().includes(q);
+    return matchesCat && matchesSearch;
   });
 
   // Sort alphabetically by title (Chinese locale)
@@ -114,6 +121,14 @@ clearBtn.addEventListener('click', () => {
   renderList();
   renderSetlist();
 });
+
+// ── Search ────────────────────────────────────────────────────
+if (searchInput) {
+  searchInput.addEventListener('input', () => {
+    searchQuery = searchInput.value;
+    renderList();
+  });
+}
 
 // ── Category filter ───────────────────────────────────────────
 document.querySelectorAll('.cat-btn').forEach(btn => {
