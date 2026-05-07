@@ -17,17 +17,13 @@
   </div>
 </div>
 
-<div class="search-wrap">
-  <input class="search-bar" id="searchInput" type="search" placeholder="搜索歌曲… Search songs…" />
-</div>
-
 <div class="category-filter">
   <button class="cat-btn active" data-cat="all">全部</button>
   <button class="cat-btn" data-cat="praise">赞美</button>
   <button class="cat-btn" data-cat="worship">敬拜</button>
-  <button class="cat-btn" data-cat="slow">抒情</button>
   <button class="cat-btn" data-cat="fast">快歌</button>
   <button class="cat-btn" data-cat="dialect">方言</button>
+  <button class="cat-btn" data-cat="lifeline">生命之光</button>
 </div>
 
 <div class="song-list" id="songList">
@@ -37,7 +33,7 @@
 <!-- Fixed setlist panel at bottom -->
 <div class="setlist-panel">
   <div class="setlist-header">
-    <h3>歌单 <span id="setlistCount" style="color:var(--text-muted);font-weight:400;font-size:0.85rem">（最多5首）</span></h3>
+    <h3>歌单 <span id="setlistCount" style="color:var(--text-muted);font-weight:400;font-size:0.85rem">（0/6）</span></h3>
     <button class="btn btn-ghost btn-sm" id="clearBtn">清除</button>
   </div>
   <div class="setlist-songs" id="setlistSongs">

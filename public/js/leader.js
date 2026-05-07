@@ -1,17 +1,15 @@
 // Leader view — browse songs, build setlist, share via WhatsApp
 
-const MAX_SONGS = 5;
+const MAX_SONGS = 6;
 let allSongs = [];
 let selected = []; // array of song ids
 let activeCat = 'all';
-let searchQuery = '';
 
 const songListEl = document.getElementById('songList');
 const setlistSongsEl = document.getElementById('setlistSongs');
 const setlistCount = document.getElementById('setlistCount');
 const shareBtn = document.getElementById('shareBtn');
 const clearBtn = document.getElementById('clearBtn');
-const searchInput = document.getElementById('searchInput');
 
 const catLabels = { praise: '赞美', worship: '敬拜', slow: '抒情', fast: '快歌', dialect: '方言' };
 
@@ -21,21 +19,14 @@ function escHtml(s) {
 
 // ── Render song library ───────────────────────────────────────
 function renderList() {
-  const q = searchQuery.toLowerCase();
   const filtered = allSongs.filter(s => {
-    const matchCat = activeCat === 'all' || s.category === activeCat;
-    const matchQ = !q || s.title.toLowerCase().includes(q);
-    return matchCat && matchQ;
+    if (activeCat === 'all') return true;
+    if (activeCat === 'lifeline') return s.lyrics && s.lyrics.includes('生命之光');
+    return s.category === activeCat;
   });
 
-  // In "全部" view: sort dialect songs to the bottom, grouped together
-  if (activeCat === 'all') {
-    filtered.sort((a, b) => {
-      const aD = a.category === 'dialect' ? 1 : 0;
-      const bD = b.category === 'dialect' ? 1 : 0;
-      return aD - bD;
-    });
-  }
+  // Sort alphabetically by title (Chinese locale)
+  filtered.sort((a, b) => a.title.localeCompare(b.title, 'zh'));
 
   if (!filtered.length) {
     songListEl.innerHTML = '<p class="text-muted" style="padding:20px 0;text-align:center">没有找到歌曲</p>';
@@ -133,12 +124,6 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   });
 });
 
-// ── Search ────────────────────────────────────────────────────
-searchInput.addEventListener('input', () => {
-  searchQuery = searchInput.value;
-  renderList();
-});
-
 // ── Init ──────────────────────────────────────────────────────
 async function init() {
   try {
@@ -149,6 +134,11 @@ async function init() {
     songListEl.innerHTML = '<p class="text-muted" style="text-align:center;padding:20px">无法加载歌曲</p>';
     return;
   }
+
+  // Show total count on the 全部 tab
+  const allBtn = document.querySelector('.cat-btn[data-cat="all"]');
+  if (allBtn) allBtn.textContent = `全部（${allSongs.length}）`;
+
   renderList();
   renderSetlist();
 }

@@ -1,4 +1,4 @@
-const CACHE = 'worship-v3';
+const CACHE = 'worship-v4';
 const ASSETS = [
   '/',
   '/leader',
