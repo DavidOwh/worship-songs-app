@@ -57,11 +57,36 @@ function escHtml(s) {
   return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// ── YouTube error fallback (embedding disabled → show link) ───
+if (!window._ytMsgListenerAdded) {
+  window._ytMsgListenerAdded = true;
+  window.addEventListener('message', e => {
+    if (!e.origin.includes('youtube.com')) return;
+    try {
+      const data = JSON.parse(e.data);
+      // Error 101 / 150 = embedding disabled by video owner
+      if (data.event === 'onError' && (data.info === 101 || data.info === 150)) {
+        document.querySelectorAll('.yt-wrap iframe').forEach(iframe => {
+          if (iframe.contentWindow === e.source) {
+            const vidId = iframe.src.match(/embed\/([^?]+)/)?.[1];
+            const wrap = iframe.closest('.yt-wrap');
+            if (wrap && vidId) {
+              wrap.innerHTML =
+                `<a class="yt-watch-btn" href="https://www.youtube.com/watch?v=${vidId}"
+                    target="_blank" rel="noopener">▶ Watch on YouTube</a>`;
+            }
+          }
+        });
+      }
+    } catch {}
+  });
+}
+
 // ── Rendering ─────────────────────────────────────────────────
 function renderSong(song) {
   const ytHtml = song.youtubeId
     ? `<div class="yt-wrap">
-        <iframe src="https://www.youtube.com/embed/${song.youtubeId}?rel=0"
+        <iframe src="https://www.youtube.com/embed/${song.youtubeId}?enablejsapi=1&rel=0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen loading="lazy"></iframe>
        </div>`
