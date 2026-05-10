@@ -304,6 +304,15 @@ body {
 .welcome-icon { font-size: 4rem; margin-bottom: 8px; }
 .welcome h2 { font-size: 1.5rem; font-weight: 800; }
 .welcome p { color: var(--text-muted); font-size: 0.95rem; max-width: 280px; }
+.leader-entry-link {
+  margin-top: 24px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+.leader-entry-link:hover { opacity: 1; }
 
 /* ── Setlist panel (leader) ── */
 .setlist-panel {
