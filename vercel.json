@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/leader", "destination": "/leader.html" },
+    { "source": "/admin",  "destination": "/admin.html"  }
+  ]
+}
