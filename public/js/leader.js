@@ -1,6 +1,6 @@
 // Leader view — browse songs, build setlist, share via WhatsApp
 
-const MAX_SONGS = 6;
+const MAX_SONGS = 8;
 let allSongs = [];
 let selected = []; // array of song ids
 let activeCat = 'all';
