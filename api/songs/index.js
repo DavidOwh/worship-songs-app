@@ -21,6 +21,7 @@ module.exports = function handler(req, res) {
   if (req.method === 'GET') {
     try {
       const songs = readSongs();
+      res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
       return res.status(200).json(songs);
     } catch (e) {
       return res.status(500).json({ error: 'Failed to read songs' });
