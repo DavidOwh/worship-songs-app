@@ -1,6 +1,6 @@
 {
   "name": "worship-songs-app",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "敬拜歌曲 Worship Songs App for cell group",
   "main": "server.js",
   "scripts": {
