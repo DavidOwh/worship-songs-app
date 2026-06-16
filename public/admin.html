@@ -12,6 +12,19 @@
 </head>
 <body>
 
+<!-- Password Gate -->
+<div id="passwordGate" style="display:flex;align-items:center;justify-content:center;min-height:100vh;flex-direction:column;gap:16px;">
+  <h2 style="color:#7c6af7;">⚙️ 管理歌曲</h2>
+  <p style="color:#aaa;">请输入管理员密码</p>
+  <input id="passwordInput" type="password" placeholder="密码" style="padding:12px 16px;border-radius:8px;border:1px solid #444;background:#1a1a2e;color:#fff;font-size:1rem;width:240px;text-align:center;" />
+  <button onclick="checkPassword()" style="padding:12px 32px;background:#7c6af7;color:#fff;border:none;border-radius:8px;font-size:1rem;cursor:pointer;">进入</button>
+  <p id="passwordError" style="color:#f87171;display:none;">密码错误，请再试</p>
+  <p style="color:#555;font-size:0.8rem;">提示：你的教会邮区号码</p>
+</div>
+
+<!-- Admin Content (hidden until password correct) -->
+<div id="adminContent" style="display:none;">
+
 <div class="header">
   <h1>⚙️ 管理歌曲</h1>
   <div class="header-actions">
@@ -78,6 +91,22 @@
 
 <div class="toast" id="toast"></div>
 
+</div><!-- end adminContent -->
+
+<script>
+function checkPassword() {
+  const input = document.getElementById('passwordInput').value;
+  if (input === '149300') {
+    document.getElementById('passwordGate').style.display = 'none';
+    document.getElementById('adminContent').style.display = 'block';
+  } else {
+    document.getElementById('passwordError').style.display = 'block';
+  }
+}
+document.getElementById('passwordInput').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPassword();
+});
+</script>
 <script src="/js/admin.js"></script>
 </body>
 </html>
