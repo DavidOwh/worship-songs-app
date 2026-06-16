@@ -1,15 +1,18 @@
+const fs = require('fs');
+const path = require('path');
 const https = require('https');
 
+const SONGS_FILE = path.join(process.cwd(), 'data', 'songs.json');
 const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
 const GITHUB_OWNER = 'DavidOwh';
 const GITHUB_REPO = 'worship-songs-app';
 const GITHUB_FILE = 'data/songs.json';
 
-function githubRequest(method, path, body) {
+function githubRequest(method, urlPath, body) {
   return new Promise((resolve, reject) => {
     const options = {
       hostname: 'api.github.com',
-      path,
+      path: urlPath,
       method,
       headers: {
         'Authorization': `token ${GITHUB_TOKEN}`,
@@ -37,8 +40,7 @@ module.exports = async function handler(req, res) {
 
   if (req.method === 'GET') {
     try {
-      const result = await githubRequest('GET', `/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`);
-      const songs = JSON.parse(Buffer.from(result.body.content, 'base64').toString('utf-8'));
+      const songs = JSON.parse(fs.readFileSync(SONGS_FILE, 'utf-8'));
       res.setHeader('Cache-Control', 'no-store, no-cache, must-revalidate');
       return res.status(200).json(songs);
     } catch (e) {
