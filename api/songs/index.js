@@ -69,10 +69,11 @@ module.exports = async function handler(req, res) {
       });
 
       return res.status(201).json(newSong);
-       } catch (e) {
+    } catch (e) {
       console.error('POST error:', e.message, e.stack);
       return res.status(500).json({ error: e.message });
     }
+  }
 
   return res.status(405).json({ error: 'Method not allowed' });
 };
