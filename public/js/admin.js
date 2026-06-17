@@ -13,6 +13,7 @@ const fieldLyrics = document.getElementById('fieldLyrics');
 const submitBtn = document.getElementById('submitBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const adminSongList = document.getElementById('adminSongList');
+const adminSearch = document.getElementById('adminSearch');
 const toast = document.getElementById('toast');
 
 const catLabels = { praise: '赞美 Praise', worship: '敬拜 Worship', slow: '抒情 Slow', fast: '快歌 Fast' };
@@ -29,11 +30,13 @@ function showToast(msg, type = 'success') {
 
 // ── Render song list ──────────────────────────────────────────
 function renderAdminList() {
-  if (!allSongs.length) {
-    adminSongList.innerHTML = '<p class="text-muted">还没有歌曲，请添加。</p>';
+  const q = adminSearch.value.trim().toLowerCase();
+  const songs = q ? allSongs.filter(s => s.title.toLowerCase().includes(q)) : allSongs;
+  if (!songs.length) {
+    adminSongList.innerHTML = '<p class="text-muted">没有找到歌曲。</p>';
     return;
   }
-  adminSongList.innerHTML = allSongs.map(song => `
+  adminSongList.innerHTML = songs.map(song => `
     <div class="admin-song-item">
       <div>
         <div class="admin-song-item-title">${escHtml(song.title)}</div>
@@ -46,7 +49,7 @@ function renderAdminList() {
     </div>
   `).join('');
 
-  adminSongList.querySelectorAll('[data-edit]').forEach(btn => {
+  adminSongList.querySelectorAll('[data-edit]').forEach((btn) => {
     btn.addEventListener('click', () => startEdit(btn.dataset.edit));
   });
   adminSongList.querySelectorAll('[data-delete]').forEach(btn => {
@@ -77,6 +80,7 @@ function resetForm() {
 }
 
 cancelBtn.addEventListener('click', resetForm);
+adminSearch.addEventListener('input', renderAdminList);
 
 // ── Submit (add or update) ────────────────────────────────────
 songForm.addEventListener('submit', async e => {
