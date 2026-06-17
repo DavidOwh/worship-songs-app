@@ -3,7 +3,7 @@ const path = require('path');
 const https = require('https');
 
 const SONGS_FILE = path.join(process.cwd(), 'data', 'songs.json');
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
+const GITHUB_TOKEN = (process.env.GITHUB_TOKEN || '').trim();
 const GITHUB_OWNER = 'DavidOwh';
 const GITHUB_REPO = 'worship-songs-app';
 const GITHUB_FILE = 'data/songs.json';
