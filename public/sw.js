@@ -1,17 +1,14 @@
-const CACHE = 'worship-v9';
-const ASSETS = [
-  '/',
-  '/leader',
-  '/admin',
+const CACHE = 'worship-v10';
+
+// Only precache CSS (rarely changes); HTML and JS use network-first
+const PRECACHE = [
   '/css/style.css',
-  '/js/app.js',
-  '/js/leader.js',
-  '/js/admin.js',
-  '/manifest.json'
+  '/manifest.json',
+  '/manifest-leader.json',
 ];
 
 self.addEventListener('install', e => {
-  e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)));
+  e.waitUntil(caches.open(CACHE).then(c => c.addAll(PRECACHE)));
   self.skipWaiting();
 });
 
@@ -26,18 +23,41 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
   const { request } = e;
-  // Always fetch API calls fresh; cache everything else
-  if (request.url.includes('/api/')) {
+  const url = new URL(request.url);
+
+  // API: always network, never cache
+  if (url.pathname.startsWith('/api/')) {
     e.respondWith(
-      fetch(request).catch(() => new Response(JSON.stringify([]), { headers: { 'Content-Type': 'application/json' } }))
+      fetch(request).catch(() =>
+        new Response(JSON.stringify([]), { headers: { 'Content-Type': 'application/json' } })
+      )
     );
     return;
   }
+
+  // HTML pages and JS files: network-first (always get latest; cache only as offline fallback)
+  if (request.destination === 'document' || url.pathname.endsWith('.js')) {
+    e.respondWith(
+      fetch(request)
+        .then(res => {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(request, clone));
+          return res;
+        })
+        .catch(() => caches.match(request))
+    );
+    return;
+  }
+
+  // CSS / images / other static assets: cache-first
   e.respondWith(
-    caches.match(request).then(cached => cached || fetch(request).then(res => {
-      const clone = res.clone();
-      caches.open(CACHE).then(c => c.put(request, clone));
-      return res;
-    }))
+    caches.match(request).then(cached =>
+      cached ||
+      fetch(request).then(res => {
+        const clone = res.clone();
+        caches.open(CACHE).then(c => c.put(request, clone));
+        return res;
+      })
+    )
   );
 });
