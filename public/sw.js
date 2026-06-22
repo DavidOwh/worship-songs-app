@@ -1,4 +1,4 @@
-const CACHE = 'worship-v10';
+﻿const CACHE = 'worship-v11';
 
 // Only precache CSS (rarely changes); HTML and JS use network-first
 const PRECACHE = [
@@ -14,11 +14,17 @@ self.addEventListener('install', e => {
 
 self.addEventListener('activate', e => {
   e.waitUntil(
-    caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    )
+    caches.keys()
+      .then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k))))
+      .then(() => self.clients.claim())
+      .then(() => self.clients.matchAll({ type: 'window', includeUncontrolled: true }))
+      .then(clients => {
+        // Force all open pages to reload so they get fresh HTML/JS from network
+        clients.forEach(client => {
+          client.navigate(client.url).catch(() => {});
+        });
+      })
   );
-  self.clients.claim();
 });
 
 self.addEventListener('fetch', e => {
