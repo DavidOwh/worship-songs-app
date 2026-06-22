@@ -120,14 +120,30 @@ shareBtn.addEventListener('click', () => {
   if (!selected.length) return;
   const { songs, appUrl } = buildShareData();
   previewList.innerHTML = `
-    <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:12px">
+    <p style="font-size:0.75rem;color:var(--text-muted);margin:0 0 10px">点击歌名可查看歌词 👇</p>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px">
       ${songs.map((s, i) => `
-        <div style="padding:10px 0;${i < songs.length - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
-          <span style="color:var(--text-muted);font-size:0.8rem;margin-right:8px">${i + 1}.</span>
-          <span style="font-size:1rem;color:var(--text)">${escHtml(s.title)}</span>
+        <div class="preview-song-item" data-id="${s.id}" style="border-bottom:${i < songs.length - 1 ? '1px solid var(--border)' : 'none'}">
+          <div class="preview-song-header" style="display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:10px;background:var(--surface)">
+            <span style="color:var(--text-muted);font-size:0.8rem;min-width:18px">${i + 1}.</span>
+            <span style="flex:1;font-size:1rem;color:var(--text);font-weight:500">${escHtml(s.title)}</span>
+            <span class="preview-chevron" style="color:var(--text-muted);font-size:0.8rem;transition:transform 0.2s">▼</span>
+          </div>
+          <div class="preview-lyrics" style="display:none;padding:12px 14px 14px 42px;background:var(--bg);font-size:0.85rem;line-height:1.8;color:var(--text-muted);white-space:pre-wrap">${escHtml(s.lyrics || '（无歌词）')}</div>
         </div>`).join('')}
     </div>
     <p style="font-size:0.75rem;color:var(--text-muted);margin:0">🔗 ${escHtml(appUrl)}</p>`;
+
+  previewList.querySelectorAll('.preview-song-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.parentElement;
+      const lyrics = item.querySelector('.preview-lyrics');
+      const chevron = header.querySelector('.preview-chevron');
+      const isOpen = lyrics.style.display !== 'none';
+      lyrics.style.display = isOpen ? 'none' : 'block';
+      chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    });
+  });
   previewModal.style.display = 'flex';
 });
 
