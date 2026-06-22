@@ -1,4 +1,4 @@
-// Leader view — browse songs, build setlist, share via WhatsApp
+﻿// Leader view — browse songs, build setlist, share via WhatsApp
 
 const MAX_SONGS = 8;
 let allSongs = [];
@@ -181,11 +181,10 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   });
 });
 
-// ── Force SW update on every load ────────────────────────────
+// ── Force SW update + reload when new SW takes control ──────
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.getRegistration().then(reg => {
-    if (reg) reg.update();
-  });
+  navigator.serviceWorker.getRegistration().then(reg => { if (reg) reg.update(); });
+  navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
 }
 
 // ── Init ──────────────────────────────────────────────────────
@@ -212,3 +211,4 @@ if ('serviceWorker' in navigator) {
 }
 
 init();
+
