@@ -181,6 +181,13 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
   });
 });
 
+// ── Force SW update on every load ────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistration().then(reg => {
+    if (reg) reg.update();
+  });
+}
+
 // ── Init ──────────────────────────────────────────────────────
 async function init() {
   try {
