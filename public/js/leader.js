@@ -102,18 +102,43 @@ function toggleSong(id) {
   renderSetlist();
 }
 
-// ── Share via WhatsApp ────────────────────────────────────────
-shareBtn.addEventListener('click', () => {
-  if (!selected.length) return;
+// ── Preview modal ─────────────────────────────────────────────
+const previewModal = document.getElementById('previewModal');
+const previewList = document.getElementById('previewList');
+const confirmShareBtn = document.getElementById('confirmShareBtn');
+const closePreviewBtn = document.getElementById('closePreviewBtn');
+
+function buildShareData() {
   const ids = selected.join(',');
   const appUrl = `${location.origin}/?ids=${ids}`;
-  const songNames = selected.map(id => {
-    const s = allSongs.find(x => x.id === id);
-    return s ? s.title : id;
-  });
-  const msg = `🎵 今天的敬拜歌单：\n${songNames.map((n, i) => `${i + 1}. ${n}`).join('\n')}\n\n点击链接查看歌词：\n${appUrl}`;
-  const waUrl = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-  window.open(waUrl, '_blank');
+  const songs = selected.map(id => allSongs.find(x => x.id === id)).filter(Boolean);
+  const msg = `🎵 今天的敬拜歌单：\n${songs.map((s, i) => `${i + 1}. ${s.title}`).join('\n')}\n\n点击链接查看歌词：\n${appUrl}`;
+  return { songs, msg, appUrl };
+}
+
+shareBtn.addEventListener('click', () => {
+  if (!selected.length) return;
+  const { songs, appUrl } = buildShareData();
+  previewList.innerHTML = `
+    <div style="background:var(--bg);border-radius:12px;padding:16px;margin-bottom:12px">
+      ${songs.map((s, i) => `
+        <div style="padding:10px 0;${i < songs.length - 1 ? 'border-bottom:1px solid var(--border)' : ''}">
+          <span style="color:var(--text-muted);font-size:0.8rem;margin-right:8px">${i + 1}.</span>
+          <span style="font-size:1rem;color:var(--text)">${escHtml(s.title)}</span>
+        </div>`).join('')}
+    </div>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin:0">🔗 ${escHtml(appUrl)}</p>`;
+  previewModal.style.display = 'flex';
+});
+
+confirmShareBtn.addEventListener('click', () => {
+  const { msg } = buildShareData();
+  previewModal.style.display = 'none';
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+closePreviewBtn.addEventListener('click', () => {
+  previewModal.style.display = 'none';
 });
 
 clearBtn.addEventListener('click', () => {
