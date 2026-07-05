@@ -65,14 +65,20 @@
     <h2 style="margin:0 0 4px;font-size:1.1rem;color:var(--text)">📋 歌单预览</h2>
     <p style="margin:0 0 16px;font-size:0.8rem;color:var(--text-muted)">会众收到的歌单</p>
     <div id="previewList" style="margin-bottom:20px"></div>
-    <div style="display:flex;flex-direction:column;gap:10px">
-      <button id="confirmShareBtn" class="btn btn-whatsapp" style="justify-content:center">
-        📲 确认发送 WhatsApp
+    <div style="display:flex;gap:8px;margin-bottom:10px">
+      <button id="confirmWhatsappBtn" class="btn btn-whatsapp" style="flex:1;justify-content:center">
+        🟢 WhatsApp
       </button>
-      <button id="closePreviewBtn" class="btn btn-ghost" style="justify-content:center">
-        返回修改
+      <button id="confirmTelegramBtn" class="btn btn-telegram" style="flex:1;justify-content:center">
+        🔵 Telegram
+      </button>
+      <button id="confirmCopyBtn" class="btn btn-copy" style="flex:1;justify-content:center">
+        📋 复制
       </button>
     </div>
+    <button id="closePreviewBtn" class="btn btn-ghost" style="width:100%;justify-content:center">
+      返回修改
+    </button>
   </div>
 </div>
 

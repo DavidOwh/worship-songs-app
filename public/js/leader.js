@@ -109,7 +109,9 @@ function toggleSong(id) {
 // ── Preview modal ─────────────────────────────────────────────
 const previewModal = document.getElementById('previewModal');
 const previewList = document.getElementById('previewList');
-const confirmShareBtn = document.getElementById('confirmShareBtn');
+const confirmWhatsappBtn = document.getElementById('confirmWhatsappBtn');
+const confirmTelegramBtn = document.getElementById('confirmTelegramBtn');
+const confirmCopyBtn = document.getElementById('confirmCopyBtn');
 const closePreviewBtn = document.getElementById('closePreviewBtn');
 
 function buildShareData() {
@@ -120,8 +122,7 @@ function buildShareData() {
   return { songs, msg, appUrl };
 }
 
-shareBtn.addEventListener('click', () => {
-  if (!selected.length) return;
+function openPreviewModal() {
   const { songs, appUrl } = buildShareData();
   previewList.innerHTML = `
     <p style="font-size:0.75rem;color:var(--text-muted);margin:0 0 10px">点击歌名可查看歌词 👇</p>
@@ -149,34 +150,36 @@ shareBtn.addEventListener('click', () => {
     });
   });
   previewModal.style.display = 'flex';
-});
+}
 
-confirmShareBtn.addEventListener('click', () => {
+shareBtn.addEventListener('click', () => { if (selected.length) openPreviewModal(); });
+shareTelegramBtn.addEventListener('click', () => { if (selected.length) openPreviewModal(); });
+copyLinkBtn.addEventListener('click', () => { if (selected.length) openPreviewModal(); });
+
+confirmWhatsappBtn.addEventListener('click', () => {
   const { msg } = buildShareData();
   previewModal.style.display = 'none';
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
 });
 
-closePreviewBtn.addEventListener('click', () => {
-  previewModal.style.display = 'none';
-});
-
-// ── Share via Telegram ────────────────────────────────────────
-shareTelegramBtn.addEventListener('click', () => {
-  if (!selected.length) return;
+confirmTelegramBtn.addEventListener('click', () => {
   const { msg } = buildShareData();
+  previewModal.style.display = 'none';
   window.open(`https://t.me/share/url?url=${encodeURIComponent(msg)}`, '_blank');
 });
 
-// ── Copy link ─────────────────────────────────────────────────
-copyLinkBtn.addEventListener('click', () => {
-  if (!selected.length) return;
+confirmCopyBtn.addEventListener('click', () => {
   const { appUrl } = buildShareData();
+  previewModal.style.display = 'none';
   navigator.clipboard.writeText(appUrl).then(() => {
     const orig = copyLinkBtn.textContent;
     copyLinkBtn.textContent = '✅ 已复制！';
     setTimeout(() => { copyLinkBtn.textContent = orig; }, 2000);
   });
+});
+
+closePreviewBtn.addEventListener('click', () => {
+  previewModal.style.display = 'none';
 });
 
 clearBtn.addEventListener('click', () => {
