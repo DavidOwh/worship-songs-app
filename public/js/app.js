@@ -1,4 +1,4 @@
-// Member view — opened via shared setlist link: /?ids=1,2,3
+﻿// Member view — opened via shared setlist link: /?ids=1,2,3
 
 let songs = [];
 let currentIdx = 0;
@@ -179,9 +179,11 @@ installBtn.addEventListener('click', async () => {
   deferredInstallPrompt = null;
 });
 
-// Service worker
+// Service worker — reload when a new SW takes control so users always get latest
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
+  navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
 }
 
 init();
+

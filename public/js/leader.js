@@ -106,36 +106,72 @@ function toggleSong(id) {
   renderSetlist();
 }
 
-// ── Build share message ───────────────────────────────────────
-function buildShareMsg() {
+// ── Preview modal ─────────────────────────────────────────────
+const previewModal = document.getElementById('previewModal');
+const previewList = document.getElementById('previewList');
+const confirmShareBtn = document.getElementById('confirmShareBtn');
+const closePreviewBtn = document.getElementById('closePreviewBtn');
+
+function buildShareData() {
   const ids = selected.join(',');
   const appUrl = `${location.origin}/?ids=${ids}`;
-  const songNames = selected.map(id => {
-    const s = allSongs.find(x => x.id === id);
-    return s ? s.title : id;
-  });
-  const text = `🎵 今天的敬拜歌单：\n${songNames.map((n, i) => `${i + 1}. ${n}`).join('\n')}\n\n点击链接查看歌词：\n${appUrl}`;
-  return { text, appUrl };
+  const songs = selected.map(id => allSongs.find(x => x.id === id)).filter(Boolean);
+  const msg = `🎵 今天的敬拜歌单：\n${songs.map((s, i) => `${i + 1}. ${s.title}`).join('\n')}\n\n点击链接查看歌词：\n${appUrl}`;
+  return { songs, msg, appUrl };
 }
 
-// ── Share via WhatsApp ────────────────────────────────────────
 shareBtn.addEventListener('click', () => {
   if (!selected.length) return;
-  const { text } = buildShareMsg();
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+  const { songs, appUrl } = buildShareData();
+  previewList.innerHTML = `
+    <p style="font-size:0.75rem;color:var(--text-muted);margin:0 0 10px">点击歌名可查看歌词 👇</p>
+    <div style="border-radius:12px;overflow:hidden;border:1px solid var(--border);margin-bottom:12px">
+      ${songs.map((s, i) => `
+        <div class="preview-song-item" data-id="${s.id}" style="border-bottom:${i < songs.length - 1 ? '1px solid var(--border)' : 'none'}">
+          <div class="preview-song-header" style="display:flex;align-items:center;padding:12px 14px;cursor:pointer;gap:10px;background:var(--surface)">
+            <span style="color:var(--text-muted);font-size:0.8rem;min-width:18px">${i + 1}.</span>
+            <span style="flex:1;font-size:1rem;color:var(--text);font-weight:500">${escHtml(s.title)}</span>
+            <span class="preview-chevron" style="color:var(--text-muted);font-size:0.8rem;transition:transform 0.2s">▼</span>
+          </div>
+          <div class="preview-lyrics" style="display:none;padding:12px 14px 14px 42px;background:var(--bg);font-size:0.85rem;line-height:1.8;color:var(--text-muted);white-space:pre-wrap">${escHtml(s.lyrics || '（无歌词）')}</div>
+        </div>`).join('')}
+    </div>
+    <p style="font-size:0.75rem;color:var(--text-muted);margin:0">🔗 ${escHtml(appUrl)}</p>`;
+
+  previewList.querySelectorAll('.preview-song-header').forEach(header => {
+    header.addEventListener('click', () => {
+      const item = header.parentElement;
+      const lyrics = item.querySelector('.preview-lyrics');
+      const chevron = header.querySelector('.preview-chevron');
+      const isOpen = lyrics.style.display !== 'none';
+      lyrics.style.display = isOpen ? 'none' : 'block';
+      chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    });
+  });
+  previewModal.style.display = 'flex';
+});
+
+confirmShareBtn.addEventListener('click', () => {
+  const { msg } = buildShareData();
+  previewModal.style.display = 'none';
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+closePreviewBtn.addEventListener('click', () => {
+  previewModal.style.display = 'none';
 });
 
 // ── Share via Telegram ────────────────────────────────────────
 shareTelegramBtn.addEventListener('click', () => {
   if (!selected.length) return;
-  const { text } = buildShareMsg();
-  window.open(`https://t.me/share/url?url=${encodeURIComponent(text)}`, '_blank');
+  const { msg } = buildShareData();
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(msg)}`, '_blank');
 });
 
 // ── Copy link ─────────────────────────────────────────────────
 copyLinkBtn.addEventListener('click', () => {
   if (!selected.length) return;
-  const { appUrl } = buildShareMsg();
+  const { appUrl } = buildShareData();
   navigator.clipboard.writeText(appUrl).then(() => {
     const orig = copyLinkBtn.textContent;
     copyLinkBtn.textContent = '✅ 已复制！';
@@ -166,6 +202,12 @@ document.querySelectorAll('.cat-btn').forEach(btn => {
     renderList();
   });
 });
+
+// ── Force SW update + reload when new SW takes control ──────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.getRegistration().then(reg => { if (reg) reg.update(); });
+  navigator.serviceWorker.addEventListener('controllerchange', () => window.location.reload());
+}
 
 // ── Init ──────────────────────────────────────────────────────
 async function init() {
