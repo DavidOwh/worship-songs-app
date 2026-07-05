@@ -72,6 +72,12 @@ body {
 .btn-danger { background: var(--danger); color: #fff; }
 .btn-whatsapp { background: #25d366; color: #fff; font-size: 0.95rem; padding: 10px 20px; }
 .btn-whatsapp:hover { background: #1ebe5d; }
+.btn-telegram { background: #2aabee; color: #fff; font-size: 0.95rem; padding: 10px 20px; }
+.btn-telegram:hover { background: #1a9bde; }
+.btn-copy { background: var(--surface2); color: var(--text); font-size: 0.95rem; padding: 10px 20px; border: 1px solid var(--border); }
+.btn-copy:hover { background: var(--surface); }
+.share-row { display: flex; gap: 8px; }
+.share-row .btn { flex: 1; justify-content: center; }
 .btn-sm { padding: 5px 12px; font-size: 0.8rem; }
 .btn-icon { padding: 7px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
 .btn-icon:hover { color: var(--text); background: var(--surface); }

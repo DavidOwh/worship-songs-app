@@ -46,9 +46,17 @@
   <div class="setlist-songs" id="setlistSongs">
     <span class="setlist-empty">尚未选择歌曲</span>
   </div>
-  <button class="btn btn-whatsapp" id="shareBtn" style="width:100%;justify-content:center" disabled>
-    📲 分享歌单 WhatsApp
-  </button>
+  <div class="share-row">
+    <button class="btn btn-whatsapp" id="shareBtn" disabled>
+      🟢 WhatsApp
+    </button>
+    <button class="btn btn-telegram" id="shareTelegramBtn" disabled>
+      🔵 Telegram
+    </button>
+    <button class="btn btn-copy" id="copyLinkBtn" disabled>
+      📋 复制链接
+    </button>
+  </div>
 </div>
 
 <script src="/js/leader.js"></script>

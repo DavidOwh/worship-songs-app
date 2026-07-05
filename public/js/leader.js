@@ -10,6 +10,8 @@ const songListEl = document.getElementById('songList');
 const setlistSongsEl = document.getElementById('setlistSongs');
 const setlistCount = document.getElementById('setlistCount');
 const shareBtn = document.getElementById('shareBtn');
+const shareTelegramBtn = document.getElementById('shareTelegramBtn');
+const copyLinkBtn = document.getElementById('copyLinkBtn');
 const clearBtn = document.getElementById('clearBtn');
 const searchInput = document.getElementById('searchInput');
 
@@ -68,6 +70,8 @@ function renderSetlist() {
   const count = selected.length;
   setlistCount.textContent = `（${count}/${MAX_SONGS}）`;
   shareBtn.disabled = count === 0;
+  shareTelegramBtn.disabled = count === 0;
+  copyLinkBtn.disabled = count === 0;
 
   if (!count) {
     setlistSongsEl.innerHTML = '<span class="setlist-empty">尚未选择歌曲</span>';
@@ -102,18 +106,41 @@ function toggleSong(id) {
   renderSetlist();
 }
 
-// ── Share via WhatsApp ────────────────────────────────────────
-shareBtn.addEventListener('click', () => {
-  if (!selected.length) return;
+// ── Build share message ───────────────────────────────────────
+function buildShareMsg() {
   const ids = selected.join(',');
   const appUrl = `${location.origin}/?ids=${ids}`;
   const songNames = selected.map(id => {
     const s = allSongs.find(x => x.id === id);
     return s ? s.title : id;
   });
-  const msg = `🎵 今天的敬拜歌单：\n${songNames.map((n, i) => `${i + 1}. ${n}`).join('\n')}\n\n点击链接查看歌词：\n${appUrl}`;
-  const waUrl = `https://wa.me/?text=${encodeURIComponent(msg)}`;
-  window.open(waUrl, '_blank');
+  const text = `🎵 今天的敬拜歌单：\n${songNames.map((n, i) => `${i + 1}. ${n}`).join('\n')}\n\n点击链接查看歌词：\n${appUrl}`;
+  return { text, appUrl };
+}
+
+// ── Share via WhatsApp ────────────────────────────────────────
+shareBtn.addEventListener('click', () => {
+  if (!selected.length) return;
+  const { text } = buildShareMsg();
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+});
+
+// ── Share via Telegram ────────────────────────────────────────
+shareTelegramBtn.addEventListener('click', () => {
+  if (!selected.length) return;
+  const { text } = buildShareMsg();
+  window.open(`https://t.me/share/url?url=${encodeURIComponent(text)}`, '_blank');
+});
+
+// ── Copy link ─────────────────────────────────────────────────
+copyLinkBtn.addEventListener('click', () => {
+  if (!selected.length) return;
+  const { appUrl } = buildShareMsg();
+  navigator.clipboard.writeText(appUrl).then(() => {
+    const orig = copyLinkBtn.textContent;
+    copyLinkBtn.textContent = '✅ 已复制！';
+    setTimeout(() => { copyLinkBtn.textContent = orig; }, 2000);
+  });
 });
 
 clearBtn.addEventListener('click', () => {
