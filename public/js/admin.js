@@ -111,13 +111,13 @@ songForm.addEventListener('submit', async e => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body)
       });
-      if (!res.ok) throw new Error();
+      if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || res.status); }
       showToast('✅ 歌曲已添加');
     }
     resetForm();
     await loadSongs();
-  } catch {
-    showToast('❌ 保存失败，请重试', 'error');
+  } catch (e) {
+    showToast(`❌ 保存失败：${e.message}`, 'error');
   }
 });
 
@@ -127,11 +127,11 @@ async function deleteSong(id) {
   if (!confirm(`确定要删除《${song?.title}》吗？`)) return;
   try {
     const res = await fetch(`/api/songs/${id}`, { method: 'DELETE' });
-    if (!res.ok) throw new Error();
+    if (!res.ok) { const e = await res.json().catch(() => ({})); throw new Error(e.error || res.status); }
     showToast('🗑️ 歌曲已删除');
     await loadSongs();
-  } catch {
-    showToast('❌ 删除失败', 'error');
+  } catch (e) {
+    showToast(`❌ 删除失败：${e.message}`, 'error');
   }
 }
 
