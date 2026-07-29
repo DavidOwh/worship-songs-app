@@ -60,6 +60,10 @@ function trackUsage(id) {
   usageStats[id] = (usageStats[id] || 0) + 1;
   localStorage.setItem(USAGE_KEY, JSON.stringify(usageStats));
 }
+function deleteUsage(id) {
+  delete usageStats[id];
+  localStorage.setItem(USAGE_KEY, JSON.stringify(usageStats));
+}
 
 // ── Setlist history ───────────────────────────────────────────
 function loadHistory() {
@@ -140,10 +144,19 @@ function renderList() {
           ${useCount > 0 ? `<span class="usage-badge">🔥 ${useCount}次</span>` : ''}
         </div>
       </div>
-      <div class="song-check">${isSel ? '✓' : ''}</div>
+      ${activeCat === 'top'
+        ? `<button class="usage-delete-btn" data-id="${song.id}" title="删除此记录">✕</button>`
+        : `<div class="song-check">${isSel ? '✓' : ''}</div>`}
     </div>`;
   }).join('');
 
+  songListEl.querySelectorAll('.usage-delete-btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      deleteUsage(btn.dataset.id);
+      renderList();
+    });
+  });
   songListEl.querySelectorAll('.song-card').forEach(card => {
     card.addEventListener('click', () => toggleSong(card.dataset.id));
   });
