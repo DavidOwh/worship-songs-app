@@ -514,3 +514,18 @@ body {
 
 /* ── History restore button ── */
 .restore-btn { margin-top: 10px; }
+
+/* ── Usage delete button (shown in 最常用 tab only) ── */
+.usage-delete-btn {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: 1.5px solid var(--border);
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.usage-delete-btn:hover { background: rgba(248,113,113,0.15); color: var(--danger); border-color: var(--danger); }
