@@ -1,4 +1,4 @@
-// Leader view — browse songs, build setlist, share via WhatsApp
+﻿// Leader view — browse songs, build setlist, share via WhatsApp
 
 const MAX_SONGS = 8;
 let allSongs = [];
@@ -169,9 +169,9 @@ confirmTelegramBtn.addEventListener('click', () => {
 });
 
 confirmCopyBtn.addEventListener('click', () => {
-  const { appUrl } = buildShareData();
+  const { msg } = buildShareData();
   previewModal.style.display = 'none';
-  navigator.clipboard.writeText(appUrl).then(() => {
+  navigator.clipboard.writeText(msg).then(() => {
     const orig = copyLinkBtn.textContent;
     copyLinkBtn.textContent = '✅ 已复制！';
     setTimeout(() => { copyLinkBtn.textContent = orig; }, 2000);
@@ -236,3 +236,4 @@ if ('serviceWorker' in navigator) {
 }
 
 init();
+
