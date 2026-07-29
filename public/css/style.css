@@ -481,3 +481,36 @@ body {
   .setlist-panel { max-width: 640px; left: 50%; transform: translateX(-50%); border-radius: 20px 20px 0 0; }
   .search-wrap, .category-filter, .song-list { max-width: 640px; margin-left: auto; margin-right: auto; }
 }
+
+/* ── Light mode override (leader app defaults dark) ── */
+[data-theme="light"] {
+  --bg: #f5f7fa;
+  --surface: #ffffff;
+  --surface2: #eef2f7;
+  --accent: #7c6af7;
+  --accent-light: #5b4dd6;
+  --text: #1a2737;
+  --text-muted: #6b7a8a;
+  --border: #dce4ee;
+}
+[data-theme="light"] body { color: var(--text); }
+[data-theme="light"] .cat-btn.active { background: rgba(124,106,247,0.12); }
+[data-theme="light"] .song-card { background: #fff; }
+[data-theme="light"] .song-card:hover { background: #f8f5ff; }
+[data-theme="light"] .song-card.selected { background: rgba(124,106,247,0.08); }
+[data-theme="light"] .tag-praise { background: #fff3e0; }
+[data-theme="light"] .tag-slow { background: #e8f4fd; }
+
+/* ── Usage badge ── */
+.usage-badge {
+  display: inline-block;
+  font-size: 0.7rem;
+  padding: 1px 7px;
+  border-radius: 10px;
+  background: rgba(251,191,36,0.15);
+  color: var(--gold);
+  font-weight: 600;
+}
+
+/* ── History restore button ── */
+.restore-btn { margin-top: 10px; }
