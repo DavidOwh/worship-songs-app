@@ -1,6 +1,5 @@
 // Leader view — browse songs, build setlist, share via WhatsApp
 
-const MAX_SONGS = 8;
 const USAGE_KEY = 'leader_usage_v1';
 const SETLIST_HISTORY_KEY = 'leader_setlists_v1';
 const THEME_KEY = 'leader_theme_v1';
@@ -131,11 +130,8 @@ function renderList() {
 
   songListEl.innerHTML = filtered.map(song => {
     const isSel = selected.includes(song.id);
-    const isDisabled = !isSel && selected.length >= MAX_SONGS;
     const useCount = usageStats[song.id] || 0;
-    return `<div class="song-card ${isSel ? 'selected' : ''} ${isDisabled ? 'disabled' : ''}"
-               data-id="${song.id}"
-               style="${isDisabled ? 'opacity:0.45;cursor:not-allowed' : ''}">
+    return `<div class="song-card ${isSel ? 'selected' : ''}" data-id="${song.id}">
       <div class="song-card-info">
         <div class="song-card-title">${escHtml(song.title)}</div>
         <div class="song-card-meta">
@@ -165,7 +161,7 @@ function renderList() {
 // ── Render setlist panel ──────────────────────────────────────
 function renderSetlist() {
   const count = selected.length;
-  setlistCount.textContent = `（${count}/${MAX_SONGS}）`;
+  setlistCount.textContent = `（${count}首）`;
   shareBtn.disabled = count === 0;
   shareTelegramBtn.disabled = count === 0;
   copyLinkBtn.disabled = count === 0;
@@ -198,7 +194,6 @@ function toggleSong(id) {
   if (selected.includes(id)) {
     selected = selected.filter(s => s !== id);
   } else {
-    if (selected.length >= MAX_SONGS) return;
     selected.push(id);
     trackUsage(id);
   }
