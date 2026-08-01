@@ -137,6 +137,7 @@ function renderList() {
         <div class="song-card-meta">
           <span class="tag tag-${song.category}">${catLabels[song.category] || song.category}</span>
           ${song.youtubeId ? '<span style="font-size:0.75rem;color:var(--text-muted)">▶ YouTube</span>' : ''}
+          ${song.noAds ? '<span class="noads-badge">✅无广告</span>' : ''}
           ${useCount > 0 ? `<span class="usage-badge">🔥 ${useCount}次</span>` : ''}
         </div>
       </div>
