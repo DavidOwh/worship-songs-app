@@ -1,7 +1,7 @@
 {
-  "name": "选歌 — 敬拜歌曲",
-  "short_name": "选歌",
-  "description": "Worship leader song selection",
+  "name": "同心敬拜",
+  "short_name": "同心敬拜领唱",
+  "description": "同心敬拜（领唱版）— Worship leader song selection",
   "start_url": "/leader.html",
   "display": "standalone",
   "background_color": "#1c1050",
