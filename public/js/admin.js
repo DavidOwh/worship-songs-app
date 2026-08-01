@@ -10,6 +10,7 @@ const fieldTitle = document.getElementById('fieldTitle');
 const fieldCategory = document.getElementById('fieldCategory');
 const fieldYoutube = document.getElementById('fieldYoutube');
 const fieldLyrics = document.getElementById('fieldLyrics');
+const fieldNoAds = document.getElementById('fieldNoAds');
 const submitBtn = document.getElementById('submitBtn');
 const cancelBtn = document.getElementById('cancelBtn');
 const adminSongList = document.getElementById('adminSongList');
@@ -41,6 +42,7 @@ function renderAdminList() {
       <div>
         <div class="admin-song-item-title">${escHtml(song.title)}</div>
         <span class="tag tag-${song.category}">${catLabels[song.category] || song.category}</span>
+        ${song.noAds ? '<span class="noads-badge">✅无广告</span>' : ''}
       </div>
       <div class="admin-song-item-actions">
         <button class="btn btn-ghost btn-sm" data-edit="${song.id}">编辑</button>
@@ -68,6 +70,7 @@ function startEdit(id) {
   fieldCategory.value = song.category;
   fieldYoutube.value = song.youtubeId || '';
   fieldLyrics.value = song.lyrics;
+  fieldNoAds.checked = !!song.noAds;
   window.scrollTo({ top: 0, behavior: 'smooth' });
   fieldTitle.focus();
 }
@@ -89,7 +92,8 @@ songForm.addEventListener('submit', async e => {
     title: fieldTitle.value.trim(),
     category: fieldCategory.value,
     youtubeId: fieldYoutube.value.trim(),
-    lyrics: fieldLyrics.value.trim()
+    lyrics: fieldLyrics.value.trim(),
+    noAds: fieldNoAds.checked
   };
   if (!body.title || !body.category || !body.lyrics) {
     showToast('请填写必填项', 'error');
