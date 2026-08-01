@@ -306,7 +306,10 @@ function openHistoryModal() {
       <div style="border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px">
         <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:8px;font-weight:600">${escHtml(entry.date)}</div>
         <div style="font-size:0.9rem;line-height:1.8;color:var(--text)">${entry.songs.map((s, j) => `${j + 1}. ${escHtml(s.title)}`).join('<br>')}</div>
-        <button class="btn btn-ghost btn-sm restore-btn" data-idx="${i}" style="margin-top:10px">↩ 恢复此歌单</button>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn btn-ghost btn-sm restore-btn" data-idx="${i}">↩ 恢复此歌单</button>
+          <button class="btn btn-ghost btn-sm history-delete-btn" data-idx="${i}" style="color:var(--danger);border-color:var(--danger)">🗑️ 删除</button>
+        </div>
       </div>`).join('');
 
     historyList.querySelectorAll('.restore-btn').forEach(btn => {
@@ -316,6 +319,16 @@ function openHistoryModal() {
         historyModal.style.display = 'none';
         renderList();
         renderSetlist();
+      });
+    });
+
+    historyList.querySelectorAll('.history-delete-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.idx);
+        if (!confirm('确定删除这个歌单记录？')) return;
+        setlistHistory.splice(idx, 1);
+        localStorage.setItem(SETLIST_HISTORY_KEY, JSON.stringify(setlistHistory));
+        openHistoryModal();
       });
     });
   }
