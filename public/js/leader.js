@@ -105,7 +105,7 @@ function renderList() {
       if (activeCat === 'all') return true;
       if (activeCat === 'top') return (usageStats[s.id] || 0) > 0;
       if (activeCat === 'lifeline') return s.label === 'lifeline';
-      if (activeCat === 'worship') return s.category === 'worship' || s.category === 'slow';
+      if (activeCat === 'worship') return s.category === 'worship';
       return s.category === activeCat;
     })();
     if (!matchesCat) return false;
