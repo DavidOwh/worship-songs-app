@@ -3,8 +3,13 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>选歌 — 敬拜歌曲</title>
+  <title>同心敬拜（领唱版）</title>
+  <meta name="application-name" content="同心敬拜" />
   <meta name="theme-color" content="#7c6af7" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="apple-mobile-web-app-title" content="同心敬拜领唱" />
   <link rel="manifest" href="/manifest-leader.json" />
   <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png" />
@@ -15,7 +20,7 @@
 <body>
 
 <div class="header">
-  <h1>🎼 选择歌曲</h1>
+  <h1>同心敬拜 领唱版</h1>
   <div class="header-actions">
     <button id="historyBtn" class="btn btn-ghost btn-sm" title="歌单历史">📋 历史</button>
     <button id="themeBtn" class="btn btn-ghost btn-sm" title="切换亮色/暗色">☀️</button>
@@ -27,6 +32,7 @@
   <button class="cat-btn" data-cat="top">🔥 最常用</button>
   <button class="cat-btn" data-cat="praise">赞美</button>
   <button class="cat-btn" data-cat="worship">敬拜</button>
+  <button class="cat-btn" data-cat="slow">抒情</button>
   <button class="cat-btn" data-cat="fast">快歌</button>
   <button class="cat-btn" data-cat="dialect">方言</button>
   <button class="cat-btn" data-cat="lifeline">生命之光</button>
@@ -44,7 +50,7 @@
 <!-- Fixed setlist panel at bottom -->
 <div class="setlist-panel">
   <div class="setlist-header">
-    <h3>歌单 <span id="setlistCount" style="color:var(--text-muted);font-weight:400;font-size:0.85rem">（0/8）</span></h3>
+    <h3>歌单 <span id="setlistCount" style="color:var(--text-muted);font-weight:400;font-size:0.85rem">（0首）</span></h3>
     <div style="display:flex;gap:6px">
       <button class="btn btn-ghost btn-sm" id="saveSetlistBtn" disabled title="保存歌单到历史">💾 保存</button>
       <button class="btn btn-ghost btn-sm" id="clearBtn">清除</button>
