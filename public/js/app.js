@@ -1,6 +1,20 @@
 ﻿// Member view — opened via shared setlist link: /?ids=1,2,3
 
-function cleanYtId(id) { return id ? id.split('?')[0].split('&')[0] : id; }
+function cleanYtId(id) {
+  if (!id) return id;
+  if (/^[a-zA-Z0-9_-]{11}$/.test(id)) return id;
+  const patterns = [
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
+  ];
+  for (const re of patterns) {
+    const m = id.match(re);
+    if (m) return m[1];
+  }
+  return id.split('?')[0].split('&')[0];
+}
 
 let songs = [];
 let currentIdx = 0;
