@@ -1,5 +1,7 @@
 ﻿// Member view — opened via shared setlist link: /?ids=1,2,3
 
+function cleanYtId(id) { return id ? id.split('?')[0].split('&')[0] : id; }
+
 let songs = [];
 let currentIdx = 0;
 let showChords = false;
@@ -86,7 +88,7 @@ if (!window._ytMsgListenerAdded) {
 function renderSong(song) {
   const ytHtml = song.youtubeId
     ? `<div class="yt-wrap">
-        <iframe src="https://www.youtube.com/embed/${song.youtubeId}?enablejsapi=1&rel=0"
+        <iframe src="https://www.youtube.com/embed/${cleanYtId(song.youtubeId)}?enablejsapi=1&rel=0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen loading="lazy"></iframe>
        </div>`
