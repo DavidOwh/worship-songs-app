@@ -23,6 +23,25 @@ function escHtml(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
+// Accepts a bare video ID or any YouTube URL format (watch, youtu.be share link
+// with ?si=, embed, shorts) and returns just the 11-character video ID.
+function extractYouTubeId(input) {
+  const s = (input || '').trim();
+  if (!s) return '';
+  if (/^[a-zA-Z0-9_-]{11}$/.test(s)) return s;
+  const patterns = [
+    /youtu\.be\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+    /youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})/
+  ];
+  for (const re of patterns) {
+    const m = s.match(re);
+    if (m) return m[1];
+  }
+  return s.split('?')[0].split('&')[0].split('#')[0];
+}
+
 function showToast(msg, type = 'success') {
   toast.textContent = msg;
   toast.className = `toast show ${type}`;
@@ -91,7 +110,7 @@ songForm.addEventListener('submit', async e => {
   const body = {
     title: fieldTitle.value.trim(),
     category: fieldCategory.value,
-    youtubeId: fieldYoutube.value.trim(),
+    youtubeId: extractYouTubeId(fieldYoutube.value),
     lyrics: fieldLyrics.value.trim(),
     noAds: fieldNoAds.checked
   };
